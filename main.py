@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 base_number = {
     'sc':6,
-    'hdc':10,
-    'dc':15,
+    'hdc':8,
+    'dc':12, # often 16
     'tc':18
 }
 
@@ -23,6 +23,13 @@ stitch_name = {
     'sk' : 'skip',
 }
 
+stitch_height = {
+    'sc' : 1,
+    'hdc' : 1.5,
+    'dc' : 2,
+    'tc' : 'treble crochet',
+}
+
 def crochet_circle(stitch, rounds):
     pattern = {'rnd 1': f'{base_number[stitch]} {stitch}'}
     for rnd in range(2, rounds):
@@ -31,7 +38,20 @@ def crochet_circle(stitch, rounds):
         else:
             pattern[f'rnd {rnd}'] = f'*{rnd-2} {stitch}, inc* {base_number[stitch]} times ({base_number[stitch] * rnd} stitches)'
     return f"{stitch_name[stitch]} circle with {rounds} rounds:", pattern
-    
+
+
+def three_ss_inc():
+    # 3 ss between every dc can replace increases 
+    # this will create an arch
+    # this will only work on the lower rounds i think
+    pattern = {}
+    return pattern
+
+def one_ss_inc():
+    # 1 ss between every dc can replace increases 
+    # this will only work on the lower rounds i think
+    pattern = {}
+    return pattern
 
 def plot_circle():
     # Create a circle using matplotlib
