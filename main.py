@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import math
+import numpy as np
 
 # sc : single crochet
 # hdc : half-double crochet
@@ -53,13 +55,37 @@ def one_ss_inc():
     pattern = {}
     return pattern
 
-def plot_circle():
-    # Create a circle using matplotlib
+def plot_circle(radius=1, center=[0,0]):
+    return plt.Circle((center[0], center[1]), radius, color='blue', fill=False)
+
+
+def draw_line(angle=45, x1=0, y1=0, length=1):
+    angle_radians = math.radians(angle)
+    x2 = x1 + length * math.cos(angle_radians)
+    y2 = y1 + length * math.sin(angle_radians)
+    plt.plot([x1, x2], [y1, y2], linewidth=2, color="blue")
+    return x2, y2
+
+
+def figure_helper(line_list, circle=True):
     fig, ax = plt.subplots()
-    circle = plt.Circle((0, 0), 1, color='blue', fill=False)
-    ax.add_artist(circle)
-    ax.set_xlim(-1.5, 1.5)
-    ax.set_ylim(-1.5, 1.5)
+    distances = []
+    if len(line_list)>0:
+        for linespecs in line_list:
+            angle = linespecs[2]
+            x1 = linespecs[0]
+            y1 = linespecs[1]
+            length = linespecs[3]
+            x2, y2 = draw_line(angle=angle, x1=x1, y1=y1, length=length)
+            distances.append(np.linalg.norm(np.array([0,0])-np.array([abs(x2),abs(y2)])))
+    # 
+    limits = np.nanmax(np.array(distances))
+    if circle:
+        circle = plot_circle(radius = limits)
+        ax.add_artist(circle)
+    limits = limits*1.1
+    ax.set_xlim(-limits, limits)
+    ax.set_ylim(-limits, limits)
     ax.set_aspect('equal', adjustable='box')
     plt.title('Circle')
     plt.grid()
